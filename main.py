@@ -1,3 +1,4 @@
+# Keep Alive had to be flagged as a comment in order for .html file to be displayed.
 # from keep_alive import keep_alive
 from server import app
 from flask import Flask, request, jsonify, send_from_directory
