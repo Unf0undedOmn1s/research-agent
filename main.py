@@ -1,9 +1,9 @@
-from keep_alive import keep_alive
+# from keep_alive import keep_alive
 from server import app
 from flask import Flask, request, jsonify, send_from_directory
 from agent import search_bing
 
-keep_alive()
+# keep_alive()
 
 app = Flask(__name__)
 
@@ -21,6 +21,3 @@ def search():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
