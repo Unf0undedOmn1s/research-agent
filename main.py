@@ -1,8 +1,8 @@
 # Keep Alive had to be flagged as a comment in order for .html file to be displayed.
 # from keep_alive import keep_alive
-from server import app
 from flask import Flask, request, jsonify, send_from_directory
 from agent import search_bing
+import os
 
 # keep_alive()
 
@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return send_from_directory('.', 'research-agent.html')
+    # Serve research-agent.html from the same directory as this file
+    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'research-agent.html')
 
 @app.route("/search")
 def search():
