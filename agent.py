@@ -1,35 +1,38 @@
-import sys
 import requests
-from bs4 import BeautifulSoup
 
-def search_google(query):
-    headers = {
-        'User-Agent': 'Mozilla/5.0',
-        'Accept-Language': 'en-US,en;q=0.9'
+def search_duckduckgo(query):
+    url = "https://api.duckduckgo.com/"
+    params = {
+        "q": query,
+        "format": "json",
+        "no_redirect": 1,
+        "no_html": 1,
+        "skip_disambig": 1
     }
-    url = f"https://www.google.com/search?q={query.replace(' ', '+')}&hl=en"
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
+    response = requests.get(url, params=params)
+    data = response.json()
     results = []
-    for g in soup.find_all('div', class_='tF2Cxc')[:5]:
-        title_tag = g.find('h3')
-        snippet_tag = g.find('div', class_='VwiC3b')
-        if title_tag and snippet_tag:
-            results.append({
-                'title': title_tag.get_text(),
-                'snippet': snippet_tag.get_text()
-            })
-    return results
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Please provide a search query")
-        sys.exit(1)
-    query = ' '.join(sys.argv[1:])
-    results = search_google(query)
-    if not results:
-        print("No results found.")
-    else:
-        for idx, r in enumerate(results, 1):
-            print(f"{idx}. {r['title']}\n{r['snippet']}\n")
+    # Add the instant answer if available
+    if data.get("AbstractText"):
+        results.append({
+            "title": data.get("Heading", "DuckDuckGo Instant Answer"),
+            "snippet": data["AbstractText"]
+        })
+
+    # Add related topics as results
+    for topic in data.get("RelatedTopics", []):
+        if "Text" in topic and "FirstURL" in topic:
+            results.append({
+                "title": topic["Text"],
+                "snippet": topic["FirstURL"]
+            })
+        elif "Topics" in topic:
+            for subtopic in topic["Topics"]:
+                if "Text" in subtopic and "FirstURL" in subtopic:
+                    results.append({
+                        "title": subtopic["Text"],
+                        "snippet": subtopic["FirstURL"]
+                    })
+
+    return results[:5]  # Return up to 5 results
