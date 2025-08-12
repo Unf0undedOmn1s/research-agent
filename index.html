@@ -67,15 +67,38 @@
     </style>
 </head>
 <body>
-    <h1>BSearch Agent</h1>
-    <h2>Built and maintained by Marios Grivas | Hosted on Render</h2>
-    <form action="/search" method="GET">
-        <input type="text" name="q" placeholder="Enter your search..." required>
+    <h1>Bing Search Agent</h1>
+    <form id="searchForm" action="/search" method="GET">
+        <input id="searchInput" type="text" name="q" placeholder="Enter your search..." required>
         <button type="submit">Search</button>
     </form>
 
-    <div class="results">
+    <div class="results" id="results">
         <!-- Search results will be injected here -->
     </div>
-</body>
-</html>
+    <script>
+        const form = document.getElementById('searchForm');
+        const input = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('results');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const query = input.value.trim();
+            if (!query) return;
+            resultsDiv.innerHTML = "<p>Searching...</p>";
+            try {
+                const resp = await fetch(`/search?q=${encodeURIComponent(query)}`);
+                const data = await resp.json();
+                if (!data.results || data.results.length === 0) {
+                    resultsDiv.innerHTML = "<p>No results found.</p>";
+                    return;
+                }
+                resultsDiv.innerHTML = data.results.map(r => `
+                    <div class="result">
+                        <a href="https://www.bing.com/search?q=${encodeURIComponent(r.title)}" target="_blank">${r.title}</a>
+                        <p>${r.snippet}</p>
+                    </div>
+                `).join('');
+            } catch (err) {
+                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            }
