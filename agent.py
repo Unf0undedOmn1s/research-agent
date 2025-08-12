@@ -3,9 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 
 def search_bing(query):
+    print(f"Searching for: {query}")
     headers = {'User-Agent': 'Mozilla/5.0'}
-    url = f"https://www.bing.com/search?q={query.replace(' ', '+')}&setlang=en-US&mkt=en-US"
+    url = f"https://www.google.com/search?q={query.replace(' ', '+')}&hl=en"
     response = requests.get(url, headers=headers)
+
+    print(f"Response status: {response.status_code}")
     soup = BeautifulSoup(response.text, 'html.parser')
     
     results = []
