@@ -1,7 +1,7 @@
 # Keep Alive had to be flagged as a comment in order for .html file to be displayed.
 # from keep_alive import keep_alive
 from flask import Flask, request, jsonify, send_from_directory
-from agent import search_bing
+from agent import search_google
 import os
 
 # keep_alive()
