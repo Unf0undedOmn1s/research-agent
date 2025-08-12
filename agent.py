@@ -3,15 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 
 def search_google(query):
-    print(f"Searching for: {query}")
     headers = {
         'User-Agent': 'Mozilla/5.0',
         'Accept-Language': 'en-US,en;q=0.9'
     }
     url = f"https://www.google.com/search?q={query.replace(' ', '+')}&hl=en"
     response = requests.get(url, headers=headers)
-
-    print(f"Response status: {response.status_code}")
     soup = BeautifulSoup(response.text, 'html.parser')
     
     results = []
@@ -35,4 +32,4 @@ if __name__ == "__main__":
         print("No results found.")
     else:
         for idx, r in enumerate(results, 1):
-            print(f"{idx}.
+            print(f"{idx}. {r['title']}\n{r['snippet']}\n")
