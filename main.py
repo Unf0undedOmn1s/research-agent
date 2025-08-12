@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
-from agent import search_google
+from agent import search_duckduckgo
 import os
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def search():
     query = request.args.get("q", "")
     if not query:
         return jsonify({"results": []})
-    results = search_google(query)
+    results = search_duckduckgo(query)
     return jsonify({"results": results})
 
 if __name__ == "__main__":
