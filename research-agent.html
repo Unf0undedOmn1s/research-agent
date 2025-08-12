@@ -68,6 +68,8 @@
 </head>
 <body>
     <h1>Bing Search Agent</h1>
+    <h2>Built and maintained by Marios Grivas | Dept of Informatics & Telecommunications/University of Ioannina</h2>
+    <h3>Hosted on Render</h3>
     <form id="searchForm" action="/search" method="GET">
         <input id="searchInput" type="text" name="q" placeholder="Enter your search..." required>
         <button type="submit">Search</button>
@@ -102,3 +104,4 @@
             } catch (err) {
                 resultsDiv.innerHTML = "<p>Error fetching results.</p>";
             }
+        });
