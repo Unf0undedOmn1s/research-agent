@@ -5,70 +5,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bing Search Agent</title>
     <style>
+        :root {
+            --primary: #0078d7;
+            --primary-dark: #005ea1;
+            --accent: #eaf4ff;
+            --background: #f8f9fa;
+            --card-bg: #fff;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--background) 60%, var(--accent) 100%);
             margin: 0;
             padding: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         h1 {
-            color: #333;
-            margin-top: 40px;
+            color: var(--primary-dark);
+            margin-top: 48px;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #eaf4ff;
         }
         form {
-            margin: 20px;
+            margin: 32px 0 16px 0;
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            background: var(--card-bg);
+            padding: 18px 22px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            align-items: center;
+            width: 95%;
+            max-width: 600px;
         }
         input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            width: 100%;
+            border: 1.5px solid var(--primary);
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+            background: var(--accent);
+        }
+        input[type="text"]:focus {
+            border: 2px solid var(--primary-dark);
+            background: #fff;
         }
         button {
-            padding: 10px 20px;
-            background-color: #0078d7;
+            padding: 12px 26px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,120,215,0.08);
+            transition: background 0.2s, transform 0.1s;
         }
         button:hover {
-            background-color: #005ea1;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px) scale(1.03);
         }
         .results {
-            margin-top: 20px;
+            margin-top: 18px;
             max-width: 600px;
-            width: 100%;
+            width: 95%;
         }
         .result {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 18px 18px 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .result:hover {
+            box-shadow: 0 4px 16px rgba(0,120,215,0.12);
+            border-left: 5px solid var(--primary-dark);
         }
         .result a {
             text-decoration: none;
-            color: #0078d7;
-            font-size: 18px;
+            color: var(--primary-dark);
+            font-size: 1.15rem;
             font-weight: bold;
+            word-break: break-word;
+            transition: color 0.2s;
+        }
+        .result a:hover {
+            color: var(--primary);
+            text-decoration: underline;
         }
         .result p {
-            margin-top: 5px;
-            color: #555;
+            margin-top: 7px;
+            color: #444;
+            font-size: 1rem;
+            line-height: 1.5;
         }
+        @media (max-width: 600px) {
+    h1 {
+        font-size: 1.3rem;
+        margin-top: 20px;
+    }
+    form {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    input[type="text"], button {
+        width: 100%;
+        font-size: 15px;
+    }
+    .results {
+        width: 98%;
+    }
+}
     </style>
 </head>
 <body>
-    <h1>Bing Search Agent</h1>
-    <h2>Built and maintained by Marios Grivas | Dept of Informatics & Telecommunications/University of Ioannina</h2>
+    <h1>Search Agent</h1>
+    <h2>Built and maintained by Marios Grivas
+    <h2>Dept of Informatics & Telecommunications/University of Ioannina</h2>
     <h3>Hosted on Render</h3>
     <form id="searchForm" action="/search" method="GET">
         <input id="searchInput" type="text" name="q" placeholder="Enter your search..." required>
@@ -102,6 +165,4 @@
                     </div>
                 `).join('');
             } catch (err) {
-                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-            }
-        });
+                resultsDiv.innerHTML =
