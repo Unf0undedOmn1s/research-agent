@@ -2,9 +2,12 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 
-def search_bing(query):
+def search_google(query):
     print(f"Searching for: {query}")
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    headers = {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept-Language': 'en-US,en;q=0.9'
+    }
     url = f"https://www.google.com/search?q={query.replace(' ', '+')}&hl=en"
     response = requests.get(url, headers=headers)
 
@@ -12,9 +15,9 @@ def search_bing(query):
     soup = BeautifulSoup(response.text, 'html.parser')
     
     results = []
-    for li in soup.find_all('li', class_='b_algo')[:5]:
-        title_tag = li.find('h2')
-        snippet_tag = li.find('p')
+    for g in soup.find_all('div', class_='tF2Cxc')[:5]:
+        title_tag = g.find('h3')
+        snippet_tag = g.find('div', class_='VwiC3b')
         if title_tag and snippet_tag:
             results.append({
                 'title': title_tag.get_text(),
@@ -27,9 +30,9 @@ if __name__ == "__main__":
         print("Please provide a search query")
         sys.exit(1)
     query = ' '.join(sys.argv[1:])
-    results = search_bing(query)
+    results = search_google(query)
     if not results:
         print("No results found.")
     else:
         for idx, r in enumerate(results, 1):
-            print(f"{idx}. {r['title']}\n{r['snippet']}\n")
+            print(f"{idx}.
