@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Agent</title>
+    <title>Bing Search Agent</title>
     <style>
         :root {
             --primary: #0078d7;
@@ -109,28 +109,28 @@
             line-height: 1.5;
         }
         @media (max-width: 600px) {
-    h1 {
-        font-size: 1.3rem;
-        margin-top: 20px;
-    }
-    form {
-        flex-direction: column;
-        gap: 8px;
-        align-items: stretch;
-    }
-    input[type="text"], button {
-        width: 100%;
-        font-size: 15px;
-    }
-    .results {
-        width: 98%;
-    }
-}
+            h1 {
+                font-size: 1.3rem;
+                margin-top: 20px;
+            }
+            form {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            input[type="text"], button {
+                width: 100%;
+                font-size: 15px;
+            }
+            .results {
+                width: 98%;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Search Agent</h1>
-    <h2>Built and maintained by Marios Grivas
+    <h2>Built and maintained by Marios Grivas</h2>
     <h2>Dept of Informatics & Telecommunications/University of Ioannina</h2>
     <h3>Hosted on Render</h3>
     <form id="searchForm" action="/search" method="GET">
@@ -165,4 +165,9 @@
                     </div>
                 `).join('');
             } catch (err) {
-                resultsDiv.innerHTML =
+                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
