@@ -4,171 +4,364 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Agent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0078d7;
-            --primary-dark: #005ea1;
-            --accent: #eaf4ff;
-            --background: #f8f9fa;
-            --card-bg: #fff;
-            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
         }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, var(--background) 60%, var(--accent) 100%);
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f7ff 100%);
+            color: var(--dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0 10px 0;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
         }
         h1 {
-            color: var(--primary-dark);
-            margin-top: 48px;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 8px #eaf4ff;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
-        form {
-            margin: 32px 0 16px 0;
-            display: flex;
-            gap: 12px;
-            background: var(--card-bg);
-            padding: 18px 22px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            align-items: center;
-            width: 95%;
+        .tagline {
+            color: #5e5e5e;
+            font-size: 1.1rem;
             max-width: 600px;
+            margin: 0 auto 15px;
+            line-height: 1.6;
         }
-        input[type="text"] {
-            padding: 12px;
-            width: 100%;
-            border: 1.5px solid var(--primary);
-            border-radius: 8px;
+        .info {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px 0 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .info p {
+            margin-bottom: 10px;
+            color: #555;
             font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
+        }
+        .info p:last-child {
+            margin-bottom: 0;
+        }
+        .mock-results {
+            margin-bottom: 30px;
+        }
+        .mock-result-header {
             background: var(--accent);
+            color: var(--primary-dark);
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 10px rgba(76, 201, 240, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        input[type="text"]:focus {
-            border: 2px solid var(--primary-dark);
-            background: #fff;
+        .mock-result-header a {
+            color: var(--primary-dark);
+            text-decoration: underline;
+            font-weight: 700;
+            word-break: break-all;
         }
-        button {
-            padding: 12px 26px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        .search-container {
+            width: 100%;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: slideUp 0.8s 0.2s ease-out both;
+        }
+        .search-box {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            transition: var(--transition);
+        }
+        .search-box:focus-within {
+            box-shadow: 0 10px 40px rgba(67, 97, 238, 0.2);
+            transform: translateY(-3px);
+        }
+        .search-box input {
+            flex: 1;
+            padding: 18px 25px;
+            border: none;
+            font-size: 1.1rem;
+            outline: none;
+            background: transparent;
+            color: var(--dark);
+        }
+        .search-box input::placeholder {
+            color: #a0a0a0;
+        }
+        .search-box button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            padding: 0 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,120,215,0.08);
-            transition: background 0.2s, transform 0.1s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        button:hover {
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
-            transform: translateY(-2px) scale(1.03);
+        .search-box button:hover {
+            background: linear-gradient(135deg, #3a56e0 0%, #2f0a8f 100%);
         }
         .results {
-            margin-top: 18px;
-            max-width: 600px;
-            width: 95%;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .result-count {
+            color: #5e5e5e;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            font-size: 1rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease-out;
         }
         .result {
             background: var(--card-bg);
-            padding: 18px 18px 12px 18px;
-            border-radius: 10px;
-            margin-bottom: 16px;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary);
-            transition: box-shadow 0.2s, border-color 0.2s;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.6s ease-out;
         }
         .result:hover {
-            box-shadow: 0 4px 16px rgba(0,120,215,0.12);
-            border-left: 5px solid var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-left-color: var(--accent);
         }
-        .result a {
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .result-title a {
             text-decoration: none;
-            color: var(--primary-dark);
-            font-size: 1.15rem;
-            font-weight: bold;
-            word-break: break-word;
-            transition: color 0.2s;
-        }
-        .result a:hover {
             color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            transition: var(--transition);
+            word-break: break-all;
+        }
+        .result-title a:hover {
+            color: var(--primary-dark);
             text-decoration: underline;
         }
         .result p {
-            margin-top: 7px;
-            color: #444;
+            color: #4a4a4a;
+            line-height: 1.7;
+            margin-bottom: 15px;
             font-size: 1rem;
-            line-height: 1.5;
+        }
+        footer {
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+            opacity: 0.8;
+        }
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 600px) {
+            .search-box button span {
+                display: none;
+            }
+            .search-box button {
+                padding: 0 25px;
+            }
+            .logo {
+                gap: 12px;
+            }
             h1 {
-                font-size: 1.3rem;
-                margin-top: 20px;
+                font-size: 2rem;
             }
-            form {
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
+            .tagline {
+                font-size: 1rem;
+                padding: 0 10px;
             }
-            input[type="text"], button {
-                width: 100%;
-                font-size: 15px;
+            .info {
+                padding: 15px;
             }
-            .results {
-                width: 98%;
+            .search-box input {
+                padding: 16px 20px;
+            }
+            .result {
+                padding: 20px;
+            }
+            .mock-result-header {
+                font-size: 1rem;
+                padding: 10px 10px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Research Agent</h1>
-    <h2>Built and maintained by Marios Grivas</h2>
-    <h2>Dept of Informatics & Telecommunications ~ University of Ioannina</h2>
-    <h3>Research Agent is a simple web-based tool that lets you search the web using the DuckDuckGo Instant Answer API. Enter your query, and the agent will fetch and display relevant summaries and links from DuckDuckGo, providing quick and privacy-friendly search results right in your browser.</h3>
-    <h3>Hosted on Render</h3>
-    <form id="searchForm" action="/search" method="GET">
-        <input id="searchInput" type="text" name="q" placeholder="Enter your search..." required>
-        <button type="submit">Search</button>
-    </form>
-
-    <div class="results" id="results">
-        <!-- Search results will be injected here -->
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h1>Research Agent</h1>
+            </div>
+            <p class="tagline">Privacy-focused search powered by DuckDuckGo Instant Answer API</p>
+            <div class="info">
+                <p>Built and maintained by Marios Grivas</p>
+                <p>Dept of Informatics & Telecommunications ~ University of Ioannina</p>
+                <p>Hosted on Render</p>
+            </div>
+            <div class="mock-results">
+                <div class="mock-result-header">
+                    <i class="fa fa-book"></i>
+                    <a href="https://duckduckgo.com/api" target="_blank">DuckDuckGo Instant Answer API Documentation</a>
+                </div>
+                <div class="mock-result-header">
+                    <i class="fab fa-github"></i>
+                    <a href="https://github.com/example/research-agent" target="_blank">Research Agent GitHub Repository</a>
+                </div>
+                <div class="mock-result-header">
+                    <i class="fa fa-cloud"></i>
+                    <a href="https://render.com/" target="_blank">Render Hosting Platform</a>
+                </div>
+            </div>
+            <div class="search-container">
+                <form id="searchForm" class="search-box">
+                    <input type="text" id="searchInput" placeholder="Enter your search query..." required>
+                    <button type="submit">
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+        <div class="results" id="resultsContainer">
+            <!-- Results will appear here dynamically -->
+        </div>
     </div>
     <script>
-        const form = document.getElementById('searchForm');
-        const input = document.getElementById('searchInput');
-        const resultsDiv = document.getElementById('results');
-
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const query = input.value.trim();
-            if (!query) return;
-            resultsDiv.innerHTML = "<p>Searching...</p>";
-            try {
-                const resp = await fetch(`/search?q=${encodeURIComponent(query)}`);
-                const data = await resp.json();
-                if (!data.results || data.results.length === 0) {
-                    resultsDiv.innerHTML = "<p>No results found.</p>";
-                    return;
-                }
-                resultsDiv.innerHTML = data.results.map(r => `
-                    <div class="result">
-                        <a href="https://www.bing.com/search?q=${encodeURIComponent(r.title)}" target="_blank">${r.title}</a>
-                        <p>${r.snippet}</p>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            searchForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (!query) return;
+                resultsContainer.innerHTML = `
+                    <div class="result-count">
+                        <span class="loader"></span>Searching for: ${query}
                     </div>
-                `).join('');
-            } catch (err) {
-                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-            }
+                `;
+                try {
+                    const resp = await fetch(`/search?q=${encodeURIComponent(query)}`);
+                    const data = await resp.json();
+                    if (!data.results || data.results.length === 0) {
+                        resultsContainer.innerHTML = `<div class="result-count">No results found.</div>`;
+                        return;
+                    }
+                    resultsContainer.innerHTML = `<div class="result-count">Found ${data.results.length} results</div>`;
+                    data.results.forEach(result => {
+                        const resultElement = document.createElement('div');
+                        resultElement.className = 'result';
+                        resultElement.innerHTML = `
+                            <div class="result-title">
+                                <a href="${result.snippet.startsWith('http') ? result.snippet : 'https://duckduckgo.com/?q=' + encodeURIComponent(result.title)}" target="_blank">${result.title}</a>
+                            </div>
+                            <p>${result.snippet.startsWith('http') ? '' : result.snippet}</p>
+                        `;
+                        resultsContainer.appendChild(resultElement);
+                    });
+                } catch (err) {
+                    resultsContainer.innerHTML = `<div class="result-count">Error fetching results.</div>`;
+                }
+            });
         });
     </script>
-</body>
-</html>
